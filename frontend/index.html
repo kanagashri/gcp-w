@@ -1,28 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web App</title>
+    <title>Data Submission Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-container { max-width: 300px; margin: 0 auto; }
+    </style>
 </head>
 <body>
-    <h1>Simple Web App</h1>
-    <form id="myForm">
-        <label for="value1">Value 1:</label>
-        <input type="text" id="value1" name="value1"><br><br>
-        <label for="value2">Value 2:</label>
-        <input type="text" id="value2" name="value2"><br><br>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="form-container">
+        <h1>Submit Data</h1>
+        <form id="dataForm">
+            <label for="field1">Field 1:</label>
+            <input type="text" id="field1" name="field1" required><br><br>
+            <label for="field2">Field 2:</label>
+            <input type="text" id="field2" name="field2" required><br><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
     <script>
-        document.getElementById('myForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const value1 = document.getElementById('value1').value;
-            const value2 = document.getElementById('value2').value;
-            console.log('Values:', value1, value2);
-            // Here you'll handle the form submission to the backend
-        });
+        document.getElementById("dataForm").onsubmit = async function(event) {
+            event.preventDefault();
+            const data = {
+                field1: document.getElementById("field1").value,
+                field2: document.getElementById("field2").value
+            };
+            const response = await fetch("http://backend-service:5000/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            alert(result.message);
+        };
     </script>
 </body>
 </html>
-git add frontend/index.html
